@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/Layout">
+<head>
+    <title>Signup</title>
+</head>
+<body>
+<div layout:fragment="content" th:id="contentSignUp">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                <h3>Sign Up</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/signup}" action="/signup" method="post">
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input type="email" class="form-control" name="email" placeholder="username" required>
+
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" class="form-control" name="password" placeholder="password" required>
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-address-card"></i></span>
+                        </div>
+                        <input type="firstName" class="form-control" name="firstName" pattern="^[a-zA-Z]+$" placeholder="firstName" required>
+                    </div>
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-address-card"></i></span>
+                        </div>
+                        <input type="lastName" class="form-control" name="lastName" pattern="^[a-zA-Z]+$" placeholder="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Sign Up" class="btn float-right login_btn">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--
+    <form class="form-signin" th:action="@{/signup}" method="post">
+        <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
+        <h1 class="h3 mb-3 font-weight-normal">Signup Here</h1>
+        <div th:if="${param.error == null}">
+            Invalid email and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="email" name="email" id="inputUsername" class="form-control" placeholder="Username" required="" />
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
+        <label for="inputFirstName" class="sr-only">First Name</label>
+        <input type="text" name="firstName" id="inputFirstName" class="form-control" placeholder="Firstname" required="" />
+        <label for="inputLastName" class="sr-only">First Name</label>
+        <input type="text" name="lastName" id="inputLastName" class="form-control" placeholder="Lastname" required="" />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+    </form>
+    <form class="form-signin" th:action="@{/login}" method="get">
+        <button class="btn btn-md btn-success btn-block" type="Submit">Sign In</button>
+    </form>
+    -->
+</div>
+</body>
+</html>

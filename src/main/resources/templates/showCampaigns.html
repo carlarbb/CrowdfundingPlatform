@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/Layout">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" th:id="contentShowCampaigns">
+    <div class="d-flex justify-content-center h-100" style="padding-bottom: 50px;">
+        <form th:action="@{/searchCampaign}" th:id="searchForm" action="/searchCampaign" method="get">
+            <div class="searchbar">
+                <input class="search_input" type="text" name="searchInput" placeholder="Search for a campaign...">
+                <a th:id="searchIcon" class="search_icon"><i class="fas fa-search"></i></a>
+                <button type="submit" value="Submit" style="display:none;"></button>
+            </div>
+        </form>
+    </div>
+
+    <h2 th:id="headingShCamp" style="text-align: center; padding: 10px;">All started campaigns</h2>
+    <h2 th:if="${#arrays.isEmpty(campaigns)}" style="color:red; font-size:1.5em; text-align: center; margin:0;">
+            There are no campaigns available!</h2>
+    <div class="row" th:id="showCampContainer">
+        <div th:each="campaign : ${campaigns}" class="col-md-4" style="box-sizing: border-box; padding: 30px;">
+            <div class="campShCard">
+                <div class="card-content contentCamp">
+                    <div class="card-img divVideoCamp">
+                        <div class="embed-responsive embed-responsive-16by9 videoWrapper">
+                            <video controls preload="none" class="video">
+                                <source th:src="${campaign.campaignVideo}" type="video/mp4">
+                            </video>
+                            <div class="playpause"></div>
+                        </div>
+                        <span th:if="${#arrays.isEmpty(campaign.categories)}"><h4>No category</h4></span>
+                    </div>
+
+                    <div class="card-desc descCamp">
+                        <h3><span th:text="${campaign.title}"></span></h3>
+                        <p><span th:text="${campaign.story}"></span></p>
+                        <div style="margin-bottom:20px;" th:if="${#arrays.isEmpty(campaign.categories) == false}">
+                            <span style="font-size:1em; font-weight: bold;">Categories:</span>
+                            <span th:each="category : ${campaign.categories}" th:text="${category.categoryName} + '; '"></span>
+                        </div>
+                        <a th:href="@{${'/campaignDetails?id=' + campaign.id}}" class="btn-card btnCamp">View
+                            details</a>
+                        <span th:if="${campaign.status == 'closed'}" class="closedCampaign">CLOSED!</span>
+                    </div>
+                </div>
+                <div th:if="${campaign.completed == true and campaign.status == 'active'}" class="d-flex justify-content-end check_icon">
+                    <span><i class="fas fa-check-square"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

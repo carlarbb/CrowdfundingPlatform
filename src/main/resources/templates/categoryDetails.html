@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/Layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" th:id="contentCategoryDetails">
+
+    <div class="jumbotron jumbotron-fluid" style="height: 100vh; margin-bottom: 0;">
+        <div class="container">
+            <h1 class="display-4" style="margin-bottom: 30px;">Category Info</h1>
+
+            <div class="col-md-6" style="float:left;">
+                <h2 th:text="${'Category name: ' + category.categoryName}" style="padding-bottom: 10px;"></h2>
+                <p class="pCampInfo"><span th:text="${'Description: ' + category.description}"></span></p>
+                <p class="pCampInfo"><span th:text="${'Creator of category: ' + category.creator.userAccount.firstName + ' '+
+                category.creator.userAccount.lastName}"></span>
+                </p>
+                <p class="pCampInfo"><span th:text="${'Number of campaigns in this category: ' + numberOfCampaigns}"></span></p>
+                <button type="button" th:if="${allowedToDeleteEdit}" data-toggle="modal"
+                        data-target="#deleteCategoryModal" style="margin:10px;" class="btn btn-danger">Delete Category
+                </button>
+                <button type="button" th:if="${allowedToDeleteEdit}" data-toggle="modal" style="margin:10px;"
+                        data-target="#editCategoryModal" class="btn btn-danger">Edit Category</button>
+
+                <p th:if="${allowedToDeleteEdit == false && isCreator}" style="color:red;">You aren't allowed to delete or edit this category because
+                            some campaigns were added to it!</p>
+
+            </div>
+            <div class="col-md-6" style="float:left; width:50%; height: 50%;" >
+                <img th:src="${category.categoryPhoto}" style="width:100%; height: 100%;"/>
+            </div>
+        </div>
+    </div>
+
+    <h2 th:id="headingShCamp" th:if="${numberOfCampaigns > 0}" style="text-align: center; padding: 10px;">Campaigns in this category</h2>
+    <h2 class="alert alert-primary" role="alert" th:if="${numberOfCampaigns == 0}" style="color:red; font-size:1.5em; text-align: center; margin:0;">This category has no campaigns</h2>
+    <div class="row" th:if="${numberOfCampaigns > 0}">
+        <div th:each="campaign : ${categoryCampaigns}" class="col-md-4" style="box-sizing: border-box; padding: 30px;">
+            <div class="campShCard">
+                <div class="card-content contentCamp">
+                    <div class="card-img divVideoCamp">
+                        <div class="embed-responsive embed-responsive-16by9 videoWrapper">
+                            <video controls preload="none" class="video">
+                                <source th:src="${campaign.campaignVideo}" type="video/mp4">
+                            </video>
+                            <div class="playpause"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-desc descCamp">
+                        <h3><span th:text="${campaign.title}"></span></h3>
+                        <p><span th:text="${campaign.story}"></span></p>
+                        <a th:href="@{${'/campaignDetails?id=' + campaign.id}}" class="btn-card btnCamp">View
+                            details</a>
+                        <span th:if="${campaign.status == 'closed'}" class="closedCampaign">CLOSED!</span>
+                    </div>
+                </div>
+                <div th:if="${campaign.completed == true}" class="d-flex justify-content-end check_icon">
+                    <span><i class="fas fa-check-square"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myDelCategoryModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myDelCategoryModalLabel">Are you sure you want to delete this category?</h4>
+
+                    <form th:action="@{/deleteCategory}" action="/deleteCategory" method="post" th:id="deleteCategoryForm">
+                        <input type="hidden" name="categoryId" th:value="${category.id}">
+                        <button type="submit" style="display: none;"></button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" th:id="deleteCategorySubmit">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addCategoryModalLabel">Edit category:</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form th:action="@{/editCategory}" action="/editCategory" method="post" th:id="editCategoryForm" enctype="multipart/form-data">
+                        <div class="form-group fieldCamp">
+                            <div>
+                                <input type="hidden" class="form-control" th:value="${category.id}" name="id">
+                                <label for="categoryName"><h4>Category name: </h4></label>
+                                <input type="text" class="form-control" th:value="${category.categoryName}" name="categoryName" id="categoryName" required>
+                            </div>
+                            <div>
+                                <label for="description"><h4>Description: </h4></label>
+                                <input type="text" class="form-control" th:value="${category.description}" name="description" id="description">
+                            </div>
+                            <div>
+                                <label for="imageEditCategory"><h4>Category photo: </h4></label>
+                                <input type="file" accept="image/*" class="form-control" id="imageEditCategory" name="photoMultipart" required/>
+                            </div>
+                            <div id="editCategoryImgPreview">
+                                <img class="img-responsive" style="width:300px; height:300px;  box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.75);margin:20px;" th:src="${category.categoryPhoto}">
+                            </div>
+                        </div>
+                        <button type="submit" style="display: none;"></button>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" th:id="editCategorySubmit">Save changes!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/Layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="card col-md-12" th:id="contentEditCampaign">
+
+    <h2 class="card-header" th:id ='headerEditCamp' th:text="${'Edit campaign ' + campaign.title}" style="margin-bottom: 30px;"></h2>
+
+    <div class="card-block">
+        <form action="/editCampaign" method="post" enctype="multipart/form-data">
+            <div class="col-md-6" style="float:left; padding-left: 80px; padding-right: 80px; margin-bottom: 30px;">
+                <input type="hidden" class="form-control" th:value="${campaign.id}" name="id">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" th:value="${campaign.title}" name="title" id="title">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" th:value="${campaign.country}" name="country" id="country" pattern="[a-zA-Z]{2,}">
+                <label for="city">City</label>
+                <input type="text" class="form-control" name="city" th:value="${campaign.city}" id="city" pattern = "^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$">
+                <label for="desc">Description</label>
+                <input type="text" class="form-control" name="story" th:value="${campaign.story}" id="desc">
+            </div>
+            <div class="col-md-6" style="float:left; padding-left: 80px; padding-right: 80px; margin-bottom: 30px;">
+                <label for="requiredMoney">Required money</label>
+                <input type="number" class="form-control" name="requiredMoney" th:value="${campaign.requiredMoney}"
+                       id="requiredMoney">
+                <label for="deadline">Deadline (between 10 and 60)</label>
+                <input type="number" class="form-control" name="deadlineInDays" id="deadline"
+                       th:value="${campaign.deadlineInDays}">
+            </div>
+            <div class="col-md-12" style="clear: both; float:left; padding-left: 80px; padding-right: 80px; margin-bottom: 30px;">
+                <label for="imagesEditCamp" style="float: left; margin-right: 30px; line-height: 40px;">Edit Images</label>
+                <input type="file" accept="image/*" class="form-control" id="imagesEditCamp" name="photosMultipart" multiple/>
+                <br>
+                <div class="row" id="editPageImgPreview">
+                    <div style="position:relative;" th:each="image : ${campaign.campaignImages}">
+                        <img class="img-responsive"
+                             style="width:300px; height:300px;  box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.75);margin:20px;"
+                             th:src="${image}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="clear: both; float:left; padding-left: 80px; padding-right: 80px; margin-bottom: 30px;">
+                <label for="videoEditCamp" style="float: left; margin-right: 30px; line-height: 40px;">Upload Your Video </label>
+                <input type="file" accept="video/mp4,video/x-m4v,video/*" name="videoMultipart" class="form-control" id="videoEditCamp">
+                <br>
+                <div id="editPageVideoPreview" class="embed-responsive embed-responsive-16by9 videoWrapper col-md-6">
+                    <video class="video" controls preload="none">
+                        <source th:src="${campaign.campaignVideo}" type="video/mp4">
+                    </video>
+                    <div class="playpause"></div>
+                </div>
+                <br><br>
+                <input type="submit" th:id="submitEditCamp" class="btn btn-info" value="Save changes">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

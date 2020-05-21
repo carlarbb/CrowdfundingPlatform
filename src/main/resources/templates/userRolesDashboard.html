@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/Layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" th:id="contentUserRolesDashboard">
+    <div class="widget stacked widget-table action-table" style="width:100%;">
+
+        <div class="widget-header">
+            <h3 style="color:darkgreen; font-size: 1.2em;">Table User Roles Management</h3>
+        </div> <!-- /widget-header -->
+
+        <div class="widget-content">
+            <form th:action="@{/userRolesManagement}" action="/userRolesManagement" method="post" th:id="donateForm">
+                <table class="tableRoles table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th class="td-actions">Roles</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user, iter : ${allUsers}">
+                            <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td>
+                                <div class="form-group" style="float:left;">
+                                    <input type="checkbox" th:name="${user.id + 'user'}" th:id="${user.id + 'user'}" autocomplete="off"
+                                    th:checked="${#arrays.contains(userRolesFilteredStrings[iter.index], 'USER')}"/>
+                                    <div class="btn-group">
+                                        <label th:for="${user.id + 'user'}" class="btn btn-success">
+                                            <span><i class="fas fa-check"></i></span>
+                                            <span> </span>
+                                        </label>
+                                        <label th:for="${user.id + 'user'}" class="btn btn-default active" style="background-color: #0c5460; color:white;">
+                                            User
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="checkbox" th:name="${user.id + 'admin'}" th:id="${user.id + 'admin'}" autocomplete="off"
+                                           th:checked="${#arrays.contains(userRolesFilteredStrings[iter.index], 'ADMIN')}"/>
+                                    <div class="btn-group">
+                                        <label th:for="${user.id + 'admin'}" class="btn btn-success">
+                                            <span><i class="fas fa-check"></i></span>
+                                            <span> </span>
+                                        </label>
+                                        <label th:for="${user.id + 'admin'}" class="btn btn-default active" style="background-color: #0c5460; color:white;">
+                                           Admin
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="buttonSubmitWrapper" style="text-align:center;">
+                    <button type="submit" class="btn btn-success" style="width:20%; height:20%; font-size: 1.2em; margin-top:40px; margin-bottom: 40px;">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

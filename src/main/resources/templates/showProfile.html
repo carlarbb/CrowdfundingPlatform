@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/Layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" th:id="contentShowProfile">
+    <div class="row showProfile1">
+        <div class="card hovercard" style="background-color: rgba(0, 0, 0, 0.8) !important;">
+            <div class="cardheader" th:if="${srcCoverPicture}">
+                <img th:src="@{${'/images/' + srcCoverPicture}}" alt="Cover Picture"/>
+            </div>
+            <div class="avatar">
+                <img th:src="@{${'/images/' + srcProfilePicture}}"/>
+            </div>
+
+
+            <div class="info" id="infoProfile" style="text-align: left!important;">
+                <h2 style="padding-left:50px; color:white;">Personal info:</h2>
+                <div class="desc" style="padding-left: 100px;"
+                     th:text="${'Full name: ' + profile.userAccount.firstName + ' ' + profile.userAccount.lastName}">
+                </div>
+                <div class="desc" th:if="${profile.fbLink != ''}" style="text-align: left; padding-left: 100px; padding-right: 100px;">
+                  <span>Facebook link: </span>
+                    <a target="_blank" th:href="${profile.fbLink}"><i class="fab fa-facebook-square"
+                                                                          style="font-size: 2em;"></i></a>
+                </div>
+
+                <div class="desc" style="padding-left: 100px; padding-right: 100px;" th:if="${profile.country != ''}" th:text="${'Country: '+ profile.country}"></div>
+                <div class="desc" style="padding-left: 100px; padding-right: 100px;" th:if="${profile.city != ''}" th:text="${'City: '+ profile.city}"></div>
+                <div class="desc" style="padding-left: 100px; padding-right: 100px;" th:if="${profile.description != ''}" th:text="${'Description: '+ profile.description}"></div>
+            </div>
+
+
+            <div id="myCampaigns" style="text-align: left !important; padding-left:30px; padding-right: 30px; margin-bottom: 30px;
+                                            height: auto;">
+                <h2 th:id="headingShCamp" style="text-align: left; color: white;" class="col-md-12">Your campaigns:</h2>
+                <p th:if="${myCampaigns.isEmpty()}" style="color:white; padding-left: 70px;">You don't have any campaigns!</p>
+                <div style="clear: both; padding-left: 10px!important;" th:if="${isUser}">
+                    <button type="button" class="btn btn-success col-4" style="margin-bottom:30px;" onclick="location.href='/startCampaign'">
+                        Start new campaign
+                    </button>
+                </div>
+
+                <div th:each="campaign : ${myCampaigns}" style="float:left;" class="col-md-5 campaignInProfile">
+                    <div class="card-content contentCamp">
+                        <div class="card-img divVideoCamp">
+                            <div class="embed-responsive embed-responsive-16by9 videoWrapper">
+                              <!--  <iframe width="560" height="315" th:src="@{${campaign.campaignVideo}}" frameborder="0"
+                                        allowfullscreen></iframe> -->
+                                <video width="560" height="315" controls preload="none" class="video">
+                                    <source th:src="${campaign.campaignVideo}" type="video/mp4">
+                                </video>
+                                <div class="playpause"></div>
+                            </div>
+                            <span th:if="${#arrays.isEmpty(campaign.categories)}"><h4>No category</h4></span>
+                        </div>
+
+                        <div class="card-desc descCamp">
+                            <h3><span th:text="${campaign.title}"></span></h3>
+                            <p><span th:text="${campaign.story}"></span></p>
+                            <div style="margin-bottom:20px;" th:if="${#arrays.isEmpty(campaign.categories) == false}">
+                                <span style="font-size:1em; font-weight: bold;">Categories:</span>
+                                <span th:each="category : ${campaign.categories}" th:text="${category.categoryName} + '; '"></span>
+                            </div>
+                            <a th:href="@{${'/campaignDetails?id=' + campaign.id}}" class="btn-card btnCamp">View
+                                details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="row showProfile2">
+            <h2 th:id="headingShCamp" style="text-align: center; padding: 10px;" class="col-md-12">Your campaigns</h2>
+            <button type="button" class="col-md-12" onclick="location.href='/startCampaign'">Start new campaign</button>
+            <div th:each="campaign : ${myCampaigns}" class="col-4">
+                <div class="card-content contentCamp">
+                    <div class="card-img divVideoCamp">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe th:src="@{${campaign.campaignVideo}}" frameborder="0"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <span><h4>heading</h4></span>
+                    </div>
+
+                    <div class="card-desc">
+                        <h3><span th:text="${campaign.title}"></span></h3>
+                        <p><span th:text="${campaign.story}"></span></p>
+                        <a th:href="@{${'/campaignDetails?id=' + campaign.id}}" class="btn-card btnCamp">View details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+</body>
+</html>

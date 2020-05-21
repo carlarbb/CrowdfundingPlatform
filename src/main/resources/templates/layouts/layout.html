@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/header :: headerFragment"></head>
+
+<body>
+
+<div id="addCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addCategoryModalLabel">Add new category form:</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form th:action="@{/addCategory}" action="/addCategory" method="post" th:id="addCategoryForm" enctype="multipart/form-data">
+                    <div class="form-group fieldCamp">
+                        <div class="col-xs-6">
+                            <label for="categoryName"><h4>Category name: </h4></label>
+                            <input type="text" class="form-control" name="categoryName" id="categoryName" required>
+                        </div>
+                        <div class="col-xs-6">
+                            <label for="description"><h4>Description: </h4></label>
+                            <input type="text" class="form-control" name="description" id="description">
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="file" accept="image/*" class="form-control" id="categoryImage" name="photoMultipart" required/>
+                        </div>
+                    </div>
+                    <button type="submit" style="display: none;"></button>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" th:id="addCategorySubmit">Create category!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-th-replace="fragments/navbar :: menu"></div>
+
+<div class="myContainer">
+    <div class="alert alert-danger" role="alert" th:if="${errorMessage}" style="margin-bottom: 0;">
+        <p th:text="${'Error! ' + errorMessage}" class="errorMessages"></p>
+    </div>
+
+    <div class="alert alert-success" role="alert" th:if="${successMessage}" style="margin-bottom: 0;">
+        <p th:text="${'Success! ' + successMessage}" class="successMessages"></p>
+    </div>
+
+    <div class="alert alert-danger" role="alert" th:if="${(param.error != null) and (param.error[0] == 'true')}" style="margin-bottom: 0;">
+        <!-- doar in cazul login cu eroare -->
+        <p class="errorMessages">Error! Login data is invalid!</p>
+    </div>
+
+    <!-- sectiune cu mesaje de eroare multiple provenite din bindingResult -->
+    <div class="alert alert-danger" role="alert" th:if="${bindingErrorMessages != null}" style="margin-bottom: 0;">
+        <p th:each="error : ${bindingErrorMessages}" th:text="${'Error! ' + error.defaultMessage}" class="errorMessages"></p>
+    </div>
+
+    <div layout:fragment="content" th:id="content"></div>
+</div>
+<footer th:replace="fragments/footer :: footer" class="footer">
+    This content will remain, but other content will be inserted after it.
+</footer>
+</body>
+</html>
