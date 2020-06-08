@@ -5,8 +5,11 @@ import com.example.demo.classes.Role;
 import com.example.demo.classes.UserAccount;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserAccountRepository;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -111,5 +114,14 @@ public class UserService implements UserDetailsService{
 
     public void clearUserCollection(){
         userAccountRepository.deleteAll();
+    }
+
+    public UserAccount getCurrentUserAccount(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserAccount user;
+        if(auth!=null){
+            user = getByEmail(auth.getName());
+        }else user = null;
+        return user;
     }
 }

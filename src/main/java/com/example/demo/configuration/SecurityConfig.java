@@ -5,6 +5,7 @@ import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableAsync
 @EnableWebSecurity //enables httpBasic and form-based authentication,
                     // automatically rendering a login page
+@Profile(value = "mongo")
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired

@@ -1,21 +1,10 @@
 package com.example.demo;
 
-import com.example.demo.classes.Role;
 import com.example.demo.configuration.SecurityConfig;
-import com.example.demo.context.ApplicationContextProvider;
-import com.example.demo.repositories.RoleRepository;
-import com.example.demo.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.SpringVersion;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Arrays;
 
 @SpringBootApplication
 @Import({SecurityConfig.class})

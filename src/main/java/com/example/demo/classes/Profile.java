@@ -1,5 +1,6 @@
 package com.example.demo.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -25,14 +26,11 @@ public class Profile {
     private String encodedProfilePicture;
     private String encodedCoverPicture;
     private String fbLink;
-   // private List<Category> interests;
+
     private List<Campaign> campaigns;
 
     public Profile() {
         this.campaigns = new ArrayList<>();
-      /*  this.interests = new ArrayList<>();
-        this.contributions = new ArrayList<>();
-        */
     }
 
     public Profile(UserAccount userAccount, String city, String country, String description, String fbLink) {
@@ -41,9 +39,6 @@ public class Profile {
         this.city = city;
         this.description = description;
         this.fbLink = fbLink;
-       /* this.interests = interests;
-        this.campaigns = campaigns;
-        this.contributions = contributions; */
     }
 
     public UserAccount getUserAccount() {
@@ -110,21 +105,4 @@ public class Profile {
         this.campaigns = campaigns;
     }
 
-    /*
-    public List<Category> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(List<Category> interests) {
-        this.interests = interests;
-    }
-
-    public List<Donation> getContributions() {
-        return contributions;
-    }
-
-    public void setContributions(List<Donation> contributions) {
-        this.contributions = contributions;
-    }
-    */
 }

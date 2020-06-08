@@ -7,8 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +16,6 @@ public class Campaign {
     private String id;
     @NotBlank(message = "Campaign title is mandatory!")
     private String title;
-   // @NotNull
-    /* @NotEmpty(message = "Campaign images are mandatory!") */
     private List<String> campaignImages;
     private String country;
     private String city;
